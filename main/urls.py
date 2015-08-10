@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^$', 'main.views.home', name='home'),
     url(r'^aboutus/', 'main.views.aboutus', name='aboutus'),
     url(r'^signup/', 'main.views.signup', name='signup'),
+    url(r'^login/', 'main.views.login', name='login'),
+    url(r'^logout/', 'main.views.logout', name='logout'),
 ]
 
 admin.site.site_header = '系统管理'

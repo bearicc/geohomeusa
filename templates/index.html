@@ -385,8 +385,17 @@ body.home.has_trans_header .header #simple-menu{color:#ffffff!important;}
       <li id="menu-item-174" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="http://www.geohomeusa.com/index.php/houseevaluationreport/renthouse/">投资出租房</a></li>
   </ul>
 </li>
-    <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/signup/"><strong>注册</strong></a></li>
-</ul></div>                <!--LOAD THE HEADR SOCIAL LINKS-->
+</ul>
+<ul>
+    {% if not user %}
+      <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/signup/"><strong>注册</strong></a></li>
+      <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/login/"><strong>登录</strong></a></li>
+    {% else %}
+    <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/user/{{user.user.name}}/"><strong>您好，{{user.username}} !</strong></a></li>
+    <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/logout/"><strong>退出</strong></a></li>
+    {% endif %}
+    </ul>
+            </div>                <!--LOAD THE HEADR SOCIAL LINKS-->
                                 </div>
 			            <!--MENU END-->
             
@@ -416,7 +425,7 @@ body.home.has_trans_header .header #simple-menu{color:#ffffff!important;}
 <p style="text-align: center;"><span style="color: #000000;"> </span><span style="color: #000000;"> </span></p>
 <p style="text-align: center;"><span style="color: #000000;"> </span></p>
 <p style="text-align: center;"><span style="color: #000000;"> </span></p>
-<p style="text-align: center;"><span style="color: #000000;">  <a style="color: #000000;" href="http://www.geohomeusa.com/wp-content/uploads/2015/06/logo_white1-e1433648279642.png"><img class=" size-full wp-image-150 aligncenter" src="http://www.geohomeusa.com/wp-content/uploads/2015/06/logo_white1-e1433648279642.png" alt="logo_white_center" width="150" height="95" /></a></span></p>
+<p style="text-align: center;"><span style="color: #000000;">  <a style="color: #000000;" href=""><img class=" size-full wp-image-150 aligncenter" src="{% static 'img/logo_white.png' %}" alt="logo_white_center" width="150" height="95" /></a></span></p>
 <p style="text-align: center;"><span style="color: #ffffff;"> </span></p>
 <p style="text-align: center;"><span style="color: #ffffff; font-size: 60px; font-family: verdana, geneva;"> 好位置，好代理，才有好房子</span></p>
 <p style="text-align: center;"><span style="font-size: 28px; color: #ffffff;"><b>Buy the </b><b>right home </b><b>in the right location, </b><b>with the right agent.</b></span></p>

@@ -1,0 +1,104 @@
+{% load staticfiles %}
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>BEARICC</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' ">
+  <link rel="icon" type="image/png" href="{% static 'img/flower.png' %}" />
+  <!-- Place favicon.ico in the root directory -->
+
+  <!-- ------------------------------ CSS ------------------------------ -->
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'jquery-ui/jquery-ui.min.css' %}">
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  {% block css %}
+  {% endblock %}
+</head>
+<body>
+{% block body %}
+  <!--[if lt IE 8]>
+  <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <!-- ------------------------------ main-container ------------------------------ -->
+  <div class="main-container">
+  {% block main-container %}
+
+    <!-- ------------------------------ nav ------------------------------ -->
+    <nav class="navbar navbar-default">
+      <div class="container">
+      {% block nav %}
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand ts-inset" href="/"><img alt="Brand" src="{% static 'img/logo_white.png' %}">&nbsp;&nbsp;美吉居 GeoHome</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            {% block navbar-right %}
+            {% endblock %}
+          </ul>
+        </div><!--/.nav-collapse -->
+      {% endblock %}
+      </div><!--/.container -->
+    </nav><!-- nav -->
+
+    <!-- ------------------------------ content ------------------------------ -->
+    <div id="content" class="container">
+    {% block content %}
+    {% endblock %}
+    </div><!-- content -->
+
+    <!-- ------------------------------ footer ------------------------------ -->
+    <footer>
+    {% block footer %}
+    {% endblock %}
+    </footer><!-- footer -->
+
+  {% endblock %}
+  </div><!-- main-container -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="{% static 'js/vendor/jquery-1.11.3.min.js' %}"><\/script>')</script>
+  <script src="{% static 'js/plugins.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <!-- ------------------------------ JavaScript ------------------------------ -->
+  <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/base.js' %}"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='https://www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-59452024-2','auto');ga('send','pageview');
+  </script>
+
+  {% block script %}
+  {% endblock %}
+
+  <!--[if lt IE 9]>
+  <script>
+    document.createElement('video');
+  </script>
+  <![endif]-->
+
+{% endblock %}
+</body>
+</html>

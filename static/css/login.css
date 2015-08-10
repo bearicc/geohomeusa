@@ -1,0 +1,183 @@
+html, body {
+  min-height: 100%;
+  overflow-x: hidden;
+  font-family: 'Arial, Helvetica, sans-serif'
+}
+video {
+display: block;
+}
+.main-container {
+  position: relative;
+  min-height: 100%;
+  /* padding-bottom: 67px; space for footer art, set by base.js */
+}
+.container {
+  width: 1000px;
+  min-width: 0;
+}
+.navbar {
+  min-height: 65px;
+}
+.navbar-default {
+  background: #27cda5;
+  box-shadow: 5px 5px 10px -5px black;
+  border: none;
+  border-bottom: 1px solid #666;
+  border-radius: 0;
+  margin-bottom: 0;
+}
+.navbar-default a.navbar-brand,
+.navbar-default ul.navbar-nav>li>a {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  color: white;
+  background: transparent;
+  font-size: 36px;
+  font-weight: 400;
+  height: 65px;
+}
+nav a.navbar-brand img {
+  width: auto;
+  height: 36px;
+}
+.navbar-default ul.navbar-nav>li>a {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 700;
+}
+.navbar-default a.navbar-brand:hover,
+.navbar-default .navbar-nav>li>a:hover {
+  color: lightblue;
+}
+.navbar-default .nav li a {
+  text-transform: uppercase;
+  font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+#content {
+  background: #0247a4 url("/static/img/login-banner.jpg") center center no-repeat;
+  width: 100%;
+  height: 430px;
+  padding: 15px 0;
+}
+
+#login {
+  padding: 15px 30px;
+  width: 500px;
+  margin: 0 auto;
+  color: #6d6d6d;
+  background: white;
+}
+#login .content {
+  width: 300px;
+  margin: auto;
+}
+#login .line {
+  border-bottom: 15px;
+}
+#login h1 {
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 15px;
+    color: #1fa67b;
+}
+#login .form-group {
+    margin-bottom: 15px;
+}
+#login .checkbox {
+    margin-bottom: 10px;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+#login .checkbox.show:before {
+    content: '\e013';
+
+    font-size: 17px;
+    margin: 1px 0 0 3px;
+    position: absolute;
+    pointer-events: none;
+    font-family: 'Glyphicons Halflings';
+}
+#login .checkbox .character-checkbox {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+    display: inline-block;
+}
+#login .checkbox .label {
+    font-size: 13px;
+    font-weight: normal;
+}
+#btn-login {
+    width: 115px;
+    height: 35px;
+    line-height: 35px;
+    border: 0;
+    font-weight: bold;
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+    background: url("/static/img/icon_3_tiny.png") no-repeat 0 -90px;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0 auto;
+}
+#login .forget {
+  font-size: 13px;
+  text-align: center;
+  display: block;
+  text-align: right;
+}
+
+.form-control {
+
+}
+.btn-custom {
+    background-color: #1fa67b;
+}
+.btn-custom:hover,
+.btn-custom:focus {
+
+}
+.left {
+  text-align: left;
+}
+.center {
+  text-align: center;
+}
+.right {
+  text-align: right;
+}
+#login .header {
+  border-bottom: 1px solid #e2e2e2;
+}
+#login .header p {
+  display: inline-block;
+  padding: 15px 0;
+  margin: auto;
+  cursor: pointer;
+}
+#login .header p.active,
+#login .header p:hover {
+  border-bottom: 1px solid black;
+}
+#login .header span {
+  color: lightgreen;
+}
+#login-form {
+  margin-bottom: 10px;
+}
