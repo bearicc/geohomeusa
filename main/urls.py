@@ -19,4 +19,9 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'main.views.home', name='home'),
+    url(r'^aboutus/', 'main.views.aboutus', name='aboutus'),
+    url(r'^signup/', 'main.views.signup', name='signup'),
 ]
+
+admin.site.site_header = '系统管理'
+# handler404 = 'mysite.views.error404'
