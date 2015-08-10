@@ -274,7 +274,7 @@ body.home.has_trans_header .header #simple-menu{color:#ffffff!important;}
     padding-top: 0;
 }
 #login .form-wrap {
-    width: 30%;
+    max-width: 300px;
     margin: 0 auto;
 }
 #login h1 {
