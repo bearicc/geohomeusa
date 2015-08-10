@@ -40,7 +40,7 @@ jQuery(window).ready(function() {
 	jQuery(this).removeClass('menu_hover');	
 	});
 	jQuery('#topmenu li').has("ul").addClass('zn_parent_menu');
-	jQuery('.zn_parent_menu > a').append('<span class="menu_arrow"><i class="fa-angle-down"></i></span>');
+	jQuery('.zn_parent_menu > a').append('<span class="menu_arrow"><i class="fa fa-angle-down"></i></span>');
 	
 	}
 		
