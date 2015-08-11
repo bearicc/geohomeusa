@@ -13,21 +13,18 @@ from lib import random_string
 
 WXAPPID = r'wxc6f432c17d775275'
 WXAPPSECRET = r'912c6962607e7a409d93a9ee0a5cabae'
-WXTOKEN = r'y0TiTEvSB9Nkbo0ab-MpByWp_igh-fwhD9MM4LCG82y5H4HplryzA6otPW-37FRYbH_PhWLT2bLC0h4RjLaLtcNwsHrtHQARau4cb2KrSdc'
+#WXTOKEN = r'y0TiTEvSB9Nkbo0ab-MpByWp_igh-fwhD9MM4LCG82y5H4HplryzA6otPW-37FRYbH_PhWLT2bLC0h4RjLaLtcNwsHrtHQARau4cb2KrSdc'
 
 
 def home(request):
     # weixin url validate
     signature = request.GET.get('signature', '')
-    timestamp = request.GET.get('timestamp', '')
-    nonce     = request.GET.get('nonce', '')
     echostr   = request.GET.get('echostr', '')
-    return HttpResponse(echostr)
     if signature:
         if validateURL(signature):
             return HttpResponse(echostr)
         else:
-            print("Signature validation failed!")
+            print('Signature validation failed!')
             return HttpResponse('')
 
     user = None
@@ -165,9 +162,6 @@ def validateURL(signature):
 
     WXTOKEN = 'abc'  # get_access_token()
     s = ''.join(sorted([WXAPPID, WXAPPSECRET, WXTOKEN]))
-    print(s)
-    print(signature)
-    print(hashlib.sha1(s.encode('utf-8')).hexdigest())
     if hashlib.sha1(s.encode('utf-8')).hexdigest() == signature:
         return True 
     else:
