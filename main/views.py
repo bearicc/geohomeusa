@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as login_, logout as logout_
@@ -17,8 +18,12 @@ def home(request):
     timestamp = request.GET.get('timestamp', '')
     nonce     = request.GET.get('nonce', '')
     echostr   = request.GET.get('echostr', '')
-    if signature:# and validateURL(signature):
-        return echostr
+    if signature:
+        if validateURL(signature):
+            return HttpResponse(echostr)
+        else:
+            print("Signature validation failed!")
+            return HttpResponse('')
 
     user = None
     user_info = None
@@ -152,10 +157,13 @@ def get_user_info(qq_login_data):
 def validateURL(signature):
     import hashlib
 
-    WXAPPID = 'wxc6f432c17d775275'
-    WXAPPSECRET = '912c6962607e7a409d93a9ee0a5cabae'
-    WXTOKEN = 'y0TiTEvSB9Nkbo0ab-MpByWp_igh-fwhD9MM4LCG82y5H4HplryzA6otPW-37FRYbH_PhWLT2bLC0h4RjLaLtcNwsHrtHQARau4cb2KrSdc'
+    WXAPPID = r'wxc6f432c17d775275'
+    WXAPPSECRET = r'912c6962607e7a409d93a9ee0a5cabae'
+    WXTOKEN = r'y0TiTEvSB9Nkbo0ab-MpByWp_igh-fwhD9MM4LCG82y5H4HplryzA6otPW-37FRYbH_PhWLT2bLC0h4RjLaLtcNwsHrtHQARau4cb2KrSdc'
     s = ''.join(sorted([WXAPPID, WXAPPSECRET, WXTOKEN]))
+    print(s)
+    print(signature)
+    print(hashlib.sha1(s.encode('utf-8')).hexdigest())
     if hashlib.sha1(s.encode('utf-8')).hexdigest() == signature:
         return True 
     else:
