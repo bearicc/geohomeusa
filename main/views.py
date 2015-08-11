@@ -20,6 +20,9 @@ def home(request):
     # weixin url validate
     signature = request.GET.get('signature', '')
     echostr   = request.GET.get('echostr', '')
+    with open('tmp', 'w') as f:
+        print(signature)
+        f.write(signature)
     if signature:
         if validateURL(signature):
             return HttpResponse(echostr)
