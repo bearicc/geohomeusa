@@ -93,13 +93,12 @@ def get_token(code):
     CLIENT_ID = '101242194'
     CLIENT_SECRET = '009b1a427fcec815ad746d189cf67159'
     REDIRECT_URI = 'http://www.bearicc.com'
-    client_auth = requests.auth.HTTPBasicAuth(CLIENT_ID, CLIENT_SECRET)
-    post_data = {"grant_type": "authorization_code",
-                 "code": code,
-                 "redirect_uri": REDIRECT_URI}
-    response = requests.post('https://graph.qq.com/oauth2.0/token',
-                             auth=client_auth,
-                             data=post_data)
+    headers = {'grant_type': 'authorization_code',
+               'client_id': CLIENT_ID,
+               'client_secret': CLIENT_SECRET,
+               'code': code,
+               'redirect_uri': REDIRECT_URI}
+    response = requests.get('https://graph.qq.com/oauth2.0/token', headers)
     token_json = response.json()
     return token_json["access_token"]
 
