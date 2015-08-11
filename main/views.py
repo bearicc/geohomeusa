@@ -34,9 +34,9 @@ def home(request):
                     'oauth_consumer_key': '101242194',
                     'openid': openid}
                 user_info = get_user_info(qq_login_data)
-                user = User.objects.filter(username=user_info.get('nickname'))
+                username = user_info.get('nickname')
+                user = User.objects.filter(username=username)
                 if not user:
-                    username = user_info.get('nickname')
                     password = random_string(10)
                     User.objects.create_user(username, '', password)
                 user = authenticate(username=username, password=password)
