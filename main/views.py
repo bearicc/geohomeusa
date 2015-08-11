@@ -7,28 +7,42 @@ from urllib import parse
 from urllib.parse import parse_qs
 import requests
 import requests.auth
+from copy import deepcopy
+from lib import random_string
 
 
 def home(request):
     user = None
+    user_info = None
     if request.user.is_authenticated():
         user = request.user
+    else:
+        error = request.GET.get('error', '')
+        if error:
+            return "Error: " + error
+        state = request.GET.get('state', '')
+        if not is_valid_state(state):
+            print(state)
+        code = request.GET.get('code', '')
+        openid = ''
+        if code:
+            token_json = get_token_json(code)
+            if not token_json.get('error'):
+                openid = get_openid(token_json.get('access_token'))
+                qq_login_data = {
+                    'access_token': token_json['access_token'],
+                    'oauth_consumer_key': '101242194',
+                    'openid': openid}
+                user_info = get_user_info(qq_login_data)
+                user = User.objects.filter(username=user_info.get('nickname'))
+                if not user:
+                    username = user_info.get('nickname')
+                    password = random_string(10)
+                    User.objects.create_user(username, '', password)
+                user = authenticate(username=username, password=password)
+                login_(request, user)
 
-    error = request.GET.get('error', '')
-    if error:
-        return "Error: " + error
-    state = request.GET.get('state', '')
-    if not is_valid_state(state):
-        print(state)
-    code = request.GET.get('code', '')
-    openid = ''
-    if code:
-        token_json = get_token_json(code)
-        if not token_json.get('error'):
-            openid = get_openid(token_json.get('access_token'))
-
-        openid += " "+token_json['access_token']
-    return render(request, 'index.html', {'user': user, 'openid': openid})
+    return render(request, 'index.html', {'user': user, 'user_info': user_info})
 
 
 def aboutus(request):
@@ -117,9 +131,8 @@ def get_openid(access_token):
     return openid
 
 
-def get_user_info(access_token, openid):
-    headers = {"Authorization": "bearer " + access_token}
-    response = requests.get('https://graph.qq.com/oauth2.0/me', headers=headers)
-    me_json = response.json()
-    return me_json['openid']
-
+def get_user_info(qq_login_data):
+    headers = qq_login_data
+    response = requests.get('https://graph.qq.com/user/get_user_info', headers)
+    user_info = response.json()
+    return user_info
