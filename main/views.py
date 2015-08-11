@@ -8,10 +8,11 @@ from urllib import parse
 from urllib.parse import parse_qs
 import requests
 import requests.auth
-from copy import deepcopy
+# from copy import deepcopy
 from lib import random_string
 from django.conf import settings
 import os
+from wechat_sdk import WechatBasic
 
 WXAPPID = 'wxc6f432c17d775275'
 WXAPPSECRET = '912c6962607e7a409d93a9ee0a5cabae'
@@ -20,15 +21,21 @@ WXTOKEN = '12345'
 
 def home(request):
     # weixin url validate
+    token = WXTOKEN
     signature = request.GET.get('signature', '')
-    echostr   = request.GET.get('echostr', '')
+    # echostr = request.GET.get('echostr', '')
+    timestamp = request.GET.get('timestamp', '')
+    nonce = request.GET.get('nonce')
     debug_log('signature: '+signature)
     if signature:
+        return weixin_response(token, signature, timestamp, nonce)
+    """
         if validateURL(signature):
             return HttpResponse(echostr)
         else:
             print('Signature validation failed!')
             return HttpResponse('')
+    """
 
     user = None
     user_info = None
@@ -168,7 +175,7 @@ def validateURL(signature):
     s = ''.join(sorted([WXAPPID, WXAPPSECRET, WXTOKEN]))
     debug_log('s: '+s)
     if hashlib.sha1(s.encode('utf-8')).hexdigest() == signature:
-        return True 
+        return True
     else:
         return False
 
@@ -185,3 +192,42 @@ def get_access_token():
 def debug_log(string, mode='a'):
     with open(os.path.join(settings.BASE_DIR, 'geohomeusa_debug'), mode) as f:
         f.write(string+'\n')
+
+
+def weixin_response(token, signature, timestamp, nonce):
+    # 用户的请求内容 (Request 中的 Body)
+    # 请更改 body_text 的内容来测试下面代码的执行情况
+    body_text = """
+    <xml>
+    <ToUserName><![CDATA[touser]]></ToUserName>
+    <FromUserName><![CDATA[fromuser]]></FromUserName>
+    <CreateTime>1405994593</CreateTime>
+    <MsgType><![CDATA[text]]></MsgType>
+    <Content><![CDATA[wechat]]></Content>
+    <MsgId>6038700799783131222</MsgId>
+    </xml>
+    """
+
+    # 实例化 wechat
+    wechat = WechatBasic(token=token)
+    # 对签名进行校验
+    if wechat.check_signature(signature=signature, timestamp=timestamp, nonce=nonce):
+        # 对 XML 数据进行解析 (必要, 否则不可执行 response_text, response_image 等操作)
+        wechat.parse_data(body_text)
+        # 获得解析结果, message 为 WechatMessage 对象 (wechat_sdk.messages中定义)
+        message = wechat.get_message()
+
+        response = None
+        if message.type == 'text':
+            if message.content == 'wechat':
+                response = wechat.response_text(u'^_^')
+            else:
+                response = wechat.response_text(u'文字')
+        elif message.type == 'image':
+            response = wechat.response_text(u'图片')
+        else:
+            response = wechat.response_text(u'未知')
+
+        # 现在直接将 response 变量内容直接作为 HTTP Response 响应微信服务器即可，此处为了演示返回内容，直接将响应进行输出
+        debug_log(type(response))
+        return response
