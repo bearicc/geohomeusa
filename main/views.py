@@ -17,7 +17,7 @@ def home(request):
     timestamp = request.GET.get('timestamp')
     nonce     = request.GET.get('nonce')
     echostr   = request.GET.get('echostr')
-    if signature and validateURL(signature):
+    if signature:# and validateURL(signature):
         return echostr
 
     user = None
