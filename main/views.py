@@ -17,20 +17,23 @@ from wechat_sdk import WechatBasic
 
 WXAPPID = 'wxc6f432c17d775275'
 WXAPPSECRET = '912c6962607e7a409d93a9ee0a5cabae'
-WXTOKEN = 'abcdef'
+WXTOKEN = ''
 
 
 def home(request):
+    global WXTOKEN
     # weixin url validate
-    token = WXTOKEN
+    if not WXTOKEN:
+        token = get_access_token()
+    else:
+        token = WXTOKEN
     signature = request.GET.get('signature', '')
-    echostr = request.GET.get('echostr', '')
+    # echostr = request.GET.get('echostr', '')
     timestamp = request.GET.get('timestamp', '')
     nonce = request.GET.get('nonce')
-    return HttpResponse(echostr)
     if signature:
         debug_log('signature: '+signature)
-        return weixin_response(token, signature, timestamp, nonce)
+        return weixin_response(token, signature, timestamp, nonce, request.body)
     """
         if validateURL(signature):
             return HttpResponse(echostr)
@@ -203,19 +206,20 @@ def debug_log(string, mode='a'):
         f.write(string+'\n')
 
 
-def weixin_response(token, signature, timestamp, nonce):
+def weixin_response(token, signature, timestamp, nonce, body_text=''):
     # 用户的请求内容 (Request 中的 Body)
     # 请更改 body_text 的内容来测试下面代码的执行情况
-    body_text = """
-    <xml>
-    <ToUserName><![CDATA[touser]]></ToUserName>
-    <FromUserName><![CDATA[fromuser]]></FromUserName>
-    <CreateTime>1405994593</CreateTime>
-    <MsgType><![CDATA[text]]></MsgType>
-    <Content><![CDATA[wechat]]></Content>
-    <MsgId>6038700799783131222</MsgId>
-    </xml>
-    """
+    if not body_text:
+        body_text = """
+        <xml>
+        <ToUserName><![CDATA[touser]]></ToUserName>
+        <FromUserName><![CDATA[fromuser]]></FromUserName>
+        <CreateTime>1405994593</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content><![CDATA[wechat]]></Content>
+        <MsgId>6038700799783131222</MsgId>
+        </xml>
+        """
 
     # 实例化 wechat
     wechat = WechatBasic(token=token)
