@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login as login_, logout as logout_
 from django.contrib.auth.decorators import login_required
 from uuid import uuid4
 from urllib import parse
+from urllib.parse import parse_qs
 import requests
 import requests.auth
 
@@ -99,16 +100,14 @@ def get_token(code):
                'code': code,
                'redirect_uri': REDIRECT_URI}
     response = requests.get('https://graph.qq.com/oauth2.0/token', headers)
-    import json
-    # token_json = response.json()
-    token_json = json.load(response)
+    token_json = {k: v[0] for k, v in parse_qs(response.text).items()}
     return token_json["access_token"]
 
 
 def get_openid(access_token):
     headers = {"access_token": access_token}
     response = requests.get('https://graph.qq.com/oauth2.0/me', headers=headers)
-    me_json = response.json()
+    me_json = {k: v[0] for k, v in parse_qs(response.text).items()}
     return me_json['openid']
 
 
