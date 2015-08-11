@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as login_, logout as logout_
 from django.contrib.auth.decorators import login_required
 from uuid import uuid4
-from urllib import parse
-from urllib.parse import parse_qs
+# from urllib import parse
+# from urllib.parse import parse_qs
 import requests
 import requests.auth
 # from copy import deepcopy
@@ -103,17 +104,17 @@ def is_valid_state(state):
     return True
 
 
-def qq_login(request):
-    state = str(uuid4())
-    save_created_state(state)
-    params = {'response_type': 'code',
-              'client_id': '101242194',
-              'redirect_uri': 'http://www.bearicc.com',
-              'state': state,
-              'scope': 'do_like'}
-    qq_url = "https://graph.qq.com/oauth2.0/authorize?" + parse.urlencode(params)
-
-    return redirect(qq_url)
+# def qq_login(request):
+#     state = str(uuid4())
+#     save_created_state(state)
+#     params = {'response_type': 'code',
+#               'client_id': '101242194',
+#               'redirect_uri': 'http://www.bearicc.com',
+#               'state': state,
+#               'scope': 'do_like'}
+#     qq_url = "https://graph.qq.com/oauth2.0/authorize?" + parse.urlencode(params)
+#
+#     return redirect(qq_url)
 
 
 @login_required
@@ -133,37 +134,37 @@ def signup(request):
     return render(request, 'signup.html')
 
 
-def get_token_json(code):
-    CLIENT_ID = '101242194'
-    CLIENT_SECRET = '009b1a427fcec815ad746d189cf67159'
-    REDIRECT_URI = 'http://www.bearicc.com'
-    headers = {'grant_type': 'authorization_code',
-               'client_id': CLIENT_ID,
-               'client_secret': CLIENT_SECRET,
-               'code': code,
-               'redirect_uri': REDIRECT_URI}
-    response = requests.get('https://graph.qq.com/oauth2.0/token', headers)
-    token_json = {k: v[0] for k, v in parse_qs(response.text).items()}
-    return token_json
-
-
-def get_openid(access_token):
-    headers = {'access_token': access_token}
-    response = requests.get('https://graph.qq.com/oauth2.0/me', headers)
-    s = response.text
-    import ast
-    me_json = ast.literal_eval(s[s.index('{'):s.index('}')+1])
-    openid = me_json.get('openid')
-    if not openid:
-        openid = me_json.get('OPENID')
-    return openid
-
-
-def get_user_info(qq_login_data):
-    headers = qq_login_data
-    response = requests.get('https://graph.qq.com/user/get_user_info', headers)
-    user_info = response.json()
-    return user_info
+# def get_token_json(code):
+#     CLIENT_ID = '101242194'
+#     CLIENT_SECRET = '009b1a427fcec815ad746d189cf67159'
+#     REDIRECT_URI = 'http://www.bearicc.com'
+#     headers = {'grant_type': 'authorization_code',
+#                'client_id': CLIENT_ID,
+#                'client_secret': CLIENT_SECRET,
+#                'code': code,
+#                'redirect_uri': REDIRECT_URI}
+#     response = requests.get('https://graph.qq.com/oauth2.0/token', headers)
+#     token_json = {k: v[0] for k, v in parse_qs(response.text).items()}
+#     return token_json
+#
+#
+# def get_openid(access_token):
+#     headers = {'access_token': access_token}
+#     response = requests.get('https://graph.qq.com/oauth2.0/me', headers)
+#     s = response.text
+#     import ast
+#     me_json = ast.literal_eval(s[s.index('{'):s.index('}')+1])
+#     openid = me_json.get('openid')
+#     if not openid:
+#         openid = me_json.get('OPENID')
+#     return openid
+#
+#
+# def get_user_info(qq_login_data):
+#     headers = qq_login_data
+#     response = requests.get('https://graph.qq.com/user/get_user_info', headers)
+#     user_info = response.json()
+#     return user_info
 
 
 # weixin support
@@ -209,9 +210,10 @@ def weixin_response(token, signature, timestamp, nonce):
     """
 
     # 实例化 wechat
-    wechat = WechatBasic(token=token)
+    wechat = WechatBasic(token=WXTOKEN, appid=WXAPPID, appsecret=WXAPPSECRET)
     # 对签名进行校验
     if wechat.check_signature(signature=signature, timestamp=timestamp, nonce=nonce):
+        print('OK')
         # 对 XML 数据进行解析 (必要, 否则不可执行 response_text, response_image 等操作)
         wechat.parse_data(body_text)
         # 获得解析结果, message 为 WechatMessage 对象 (wechat_sdk.messages中定义)
@@ -229,5 +231,4 @@ def weixin_response(token, signature, timestamp, nonce):
             response = wechat.response_text(u'未知')
 
         # 现在直接将 response 变量内容直接作为 HTTP Response 响应微信服务器即可，此处为了演示返回内容，直接将响应进行输出
-        debug_log(type(response))
-        return response
+        print response
