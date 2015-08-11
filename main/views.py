@@ -13,7 +13,6 @@ def home(request):
     if request.user.is_authenticated():
         user = request.user
 
-    openid = ''
     error = request.GET.get('error', '')
     if error:
         return "Error: " + error
@@ -21,12 +20,13 @@ def home(request):
     if not is_valid_state(state):
         print(state)
     code = request.GET.get('code', '')
+    token = '123'
     if code:
         token = get_token(code)
-        openid = get_openid(token)
-        print("openid: "+openid)
+        # openid = get_openid(token)
+        # print("openid: "+openid)
 
-    return render(request, 'index.html', {'user': user, 'openid': openid})
+    return render(request, 'index.html', {'user': user, 'openid': token})
 
 
 def aboutus(request):
@@ -99,10 +99,8 @@ def get_token(code):
                'code': code,
                'redirect_uri': REDIRECT_URI}
     response = requests.get('https://graph.qq.com/oauth2.0/token', headers)
-    import os
-    os.system("cat ''"+response.text+"' > ~/tmp'")
-    token_json = response.json()
-    return token_json["access_token"]
+    # token_json = response.json()
+    return response.text  # token_json["access_token"]
 
 
 def get_openid(access_token):
