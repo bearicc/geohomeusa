@@ -161,6 +161,7 @@ def get_user_info(qq_login_data):
 
 # weixin support
 def validateURL(signature):
+    return True
     import hashlib
 
     debug_log('token: '+WXTOKEN)
