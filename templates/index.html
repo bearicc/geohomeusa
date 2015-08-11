@@ -343,7 +343,6 @@ body.home.has_trans_header .header #simple-menu{color:#ffffff!important;}
 
 
 <body class="home blog site_full has_trans_header">
-
 <!--HEADER-->
 	        <div class="header_wrap layer_wrapper">
             <!--Maintenance Mode Message-->
@@ -388,14 +387,15 @@ body.home.has_trans_header .header #simple-menu{color:#ffffff!important;}
 </li>
 </ul>
 <ul>
-    {% if not user %}
-      <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/signup/"><strong>注册</strong></a></li>
-      <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/login/"><strong>登录</strong></a></li>
-    {% else %}
+    <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/"><strong>openid: {{openid}}</strong></a></li>
+{% if not user %}
+    <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/signup/"><strong>注册</strong></a></li>
+    <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/login/"><strong>登录</strong></a></li>
+{% else %}
     <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/user/{{user.user.name}}/"><strong>您好，{{user.username}} !</strong></a></li>
     <li id="menu-item-signup" class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/logout/"><strong>退出</strong></a></li>
-    {% endif %}
-    </ul>
+{% endif %}
+</ul>
             </div>                <!--LOAD THE HEADR SOCIAL LINKS-->
                                 </div>
 			            <!--MENU END-->

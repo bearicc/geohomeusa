@@ -13,6 +13,7 @@ def home(request):
     if request.user.is_authenticated():
         user = request.user
 
+    openid = ''
     error = request.GET.get('error', '')
     if error:
         return "Error: " + error
@@ -25,7 +26,7 @@ def home(request):
         openid = get_openid(token)
         print("openid: "+openid)
 
-    return render(request, 'index.html', {'user': user})
+    return render(request, 'index.html', {'user': user, 'openid': openid})
 
 
 def aboutus(request):
