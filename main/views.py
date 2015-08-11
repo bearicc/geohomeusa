@@ -99,8 +99,10 @@ def get_token(code):
                'code': code,
                'redirect_uri': REDIRECT_URI}
     response = requests.get('https://graph.qq.com/oauth2.0/token', headers)
+    import json
     # token_json = response.json()
-    return response.text  # token_json["access_token"]
+    token_json = json.load(response)
+    return token_json["access_token"]
 
 
 def get_openid(access_token):
