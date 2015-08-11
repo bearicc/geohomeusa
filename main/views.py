@@ -10,6 +10,8 @@ import requests
 import requests.auth
 from copy import deepcopy
 from lib import random_string
+from django.conf import settings
+import os
 
 WXAPPID = r'wxc6f432c17d775275'
 WXAPPSECRET = r'912c6962607e7a409d93a9ee0a5cabae'
@@ -20,7 +22,7 @@ def home(request):
     # weixin url validate
     signature = request.GET.get('signature', '')
     echostr   = request.GET.get('echostr', '')
-    with open('/tmp/geohomeusa_debug', 'w') as f:
+    with open(os.path.join(settings.BASE_DIR, 'geohomeusa_debug'), 'w') as f:
         print(signature)
         f.write(signature)
     if signature:
