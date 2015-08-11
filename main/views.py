@@ -5,15 +5,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as login_, logout as logout_
 from django.contrib.auth.decorators import login_required
 from uuid import uuid4
-from urllib import parse
-from urllib.parse import parse_qs
+# from urllib import parse
+# from urllib.parse import parse_qs
 import requests
 import requests.auth
 # from copy import deepcopy
 from lib import random_string
 from django.conf import settings
 import os
-# from wechat_sdk import WechatBasic
+from wechat_sdk import WechatBasic
 
 WXAPPID = 'wxc6f432c17d775275'
 WXAPPSECRET = '912c6962607e7a409d93a9ee0a5cabae'
@@ -28,7 +28,7 @@ def home(request):
     timestamp = request.GET.get('timestamp', '')
     nonce = request.GET.get('nonce')
     if signature:
-	debug_log('signature: '+signature)
+        debug_log('signature: '+signature)
         return weixin_response(token, signature, timestamp, nonce)
     """
         if validateURL(signature):
@@ -104,6 +104,7 @@ def is_valid_state(state):
     return True
 
 
+"""
 def qq_login(request):
     state = str(uuid4())
     save_created_state(state)
@@ -115,6 +116,7 @@ def qq_login(request):
     qq_url = "https://graph.qq.com/oauth2.0/authorize?" + parse.urlencode(params)
 
     return redirect(qq_url)
+"""
 
 
 @login_required
@@ -134,6 +136,7 @@ def signup(request):
     return render(request, 'signup.html')
 
 
+"""
 def get_token_json(code):
     CLIENT_ID = '101242194'
     CLIENT_SECRET = '009b1a427fcec815ad746d189cf67159'
@@ -165,6 +168,7 @@ def get_user_info(qq_login_data):
     response = requests.get('https://graph.qq.com/user/get_user_info', headers)
     user_info = response.json()
     return user_info
+"""
 
 
 # weixin support
