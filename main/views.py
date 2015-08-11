@@ -42,6 +42,7 @@ def home(request):
                 else:
                     user = user[0]
                 user.is_authenticated = True
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login_(request, user)
 
     return render(request, 'index.html', {'user': user, 'user_info': user_info})
