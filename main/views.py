@@ -99,6 +99,8 @@ def get_token(code):
                'code': code,
                'redirect_uri': REDIRECT_URI}
     response = requests.get('https://graph.qq.com/oauth2.0/token', headers)
+    import os
+    os.system("cat ''"+response.text+"' > ~/tmp'")
     token_json = response.json()
     return token_json["access_token"]
 
