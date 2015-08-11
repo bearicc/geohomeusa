@@ -106,8 +106,8 @@ def get_token_json(code):
 
 
 def get_openid(access_token):
-    headers = {"access_token": access_token}
-    response = requests.get('https://graph.qq.com/oauth2.0/me', headers=headers)
+    headers = {'access_token': access_token}
+    response = requests.get('https://graph.qq.com/oauth2.0/me', headers)
     #me_json = {k: v[0] for k, v in parse_qs(response.text).items()}
     return response.text #me_json['openid']
 
