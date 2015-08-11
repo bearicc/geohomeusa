@@ -23,9 +23,10 @@ def home(request):
     code = request.GET.get('code', '')
     openid = '123'
     if code:
-        token = get_token(code)
-        openid = get_openid(token)
-        # print("openid: "+openid)
+        token_json = get_token_json(code)
+        if not token_json.get('error'):
+            openid = get_openid(token_json.get('access_token'))
+        openid += str(token_json)
 
     return render(request, 'index.html', {'user': user, 'openid': openid})
 
@@ -90,7 +91,7 @@ def signup(request):
     return render(request, 'signup.html')
 
 
-def get_token(code):
+def get_token_json(code):
     CLIENT_ID = '101242194'
     CLIENT_SECRET = '009b1a427fcec815ad746d189cf67159'
     REDIRECT_URI = 'http://www.bearicc.com'
@@ -101,7 +102,7 @@ def get_token(code):
                'redirect_uri': REDIRECT_URI}
     response = requests.get('https://graph.qq.com/oauth2.0/token', headers)
     token_json = {k: v[0] for k, v in parse_qs(response.text).items()}
-    return token_json["access_token"]
+    return token_json
 
 
 def get_openid(access_token):
