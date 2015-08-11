@@ -17,22 +17,29 @@ from wechat_sdk import WechatBasic
 
 WXAPPID = 'wxc6f432c17d775275'
 WXAPPSECRET = '912c6962607e7a409d93a9ee0a5cabae'
-WXTOKEN = ''
+WXTOKEN = 'DxX1Tc4oO0VaNzMAC_-js-P4CVeHKoBCm0zXbme1FKHqtJ0UIaPfvLhOEOSKTf4Z_s-FJh490TY62Yzdj3eWJRyALdw0G9e0KVlOskac2Yg'
 
 
 def home(request):
-    global WXTOKEN
-    # weixin url validate
-    if not WXTOKEN:
-        token = get_access_token()
-    else:
-        token = WXTOKEN
     signature = request.GET.get('signature', '')
-    # echostr = request.GET.get('echostr', '')
+    echostr = request.GET.get('echostr', '')
     timestamp = request.GET.get('timestamp', '')
     nonce = request.GET.get('nonce')
+    debug_log('signature: '+signature)
+    debug_log('body: '+request.body)
+    return HttpResponse(echostr)
     if signature:
-        debug_log('signature: '+signature)
+        """
+        token = request.session.get('WXTOKEN')
+        if not token:
+            token = get_access_token()
+            request.session['WXTOKEN'] = token
+        else:
+            token = WXTOKEN
+        """
+        token = WXTOKEN
+        debug_log('token: '+token)
+
         return weixin_response(token, signature, timestamp, nonce, request.body)
     """
         if validateURL(signature):
