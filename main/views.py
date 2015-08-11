@@ -24,7 +24,7 @@ def home(request):
     token = '123'
     if code:
         token = get_token(code)
-        # openid = get_openid(token)
+        openid = get_openid(token)
         # print("openid: "+openid)
 
     return render(request, 'index.html', {'user': user, 'openid': token})
