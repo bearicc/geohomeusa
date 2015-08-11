@@ -13,9 +13,9 @@ from lib import random_string
 from django.conf import settings
 import os
 
-WXAPPID = r'wxc6f432c17d775275'
-WXAPPSECRET = r'912c6962607e7a409d93a9ee0a5cabae'
-#WXTOKEN = r'y0TiTEvSB9Nkbo0ab-MpByWp_igh-fwhD9MM4LCG82y5H4HplryzA6otPW-37FRYbH_PhWLT2bLC0h4RjLaLtcNwsHrtHQARau4cb2KrSdc'
+WXAPPID = 'wxc6f432c17d775275'
+WXAPPSECRET = '912c6962607e7a409d93a9ee0a5cabae'
+WXTOKEN = '12345'
 
 
 def home(request):
@@ -163,7 +163,6 @@ def get_user_info(qq_login_data):
 def validateURL(signature):
     import hashlib
 
-    WXTOKEN = get_access_token()
     debug_log('token: '+WXTOKEN)
     s = ''.join(sorted([WXAPPID, WXAPPSECRET, WXTOKEN]))
     debug_log('s: '+s)
