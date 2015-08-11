@@ -2,3 +2,4 @@ staticfiles
 *.pyc
 tmp
 local
+geohomeusa_debug

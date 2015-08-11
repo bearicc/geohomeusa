@@ -23,7 +23,6 @@ def home(request):
     signature = request.GET.get('signature', '')
     echostr   = request.GET.get('echostr', '')
     with open(os.path.join(settings.BASE_DIR, 'geohomeusa_debug'), 'w') as f:
-        print(signature)
         f.write(signature)
     if signature:
         if validateURL(signature):
