@@ -110,7 +110,10 @@ def get_openid(access_token):
     s = response.text
     import ast
     me_json = ast.literal_eval(s[s.index('{'):s.index('}')+1])
-    return me_json['OPENID']
+    openid = me_json.get('openid')
+    if not openid:
+        openid = me_json.get('OPENID')
+    return openid
 
 
 def get_user_info(access_token, openid):
