@@ -12,7 +12,7 @@ from lib import random_string
 
 
 def home(request):
-    // weixin url validate
+    # weixin url validate
     signature = request.GET.get('signature')
     timestamp = request.GET.get('timestamp')
     nonce     = request.GET.get('nonce')
