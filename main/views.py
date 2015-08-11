@@ -39,6 +39,8 @@ def home(request):
                 if not user:
                     password = random_string(10)
                     User.objects.create_user(username, '', password)
+                else:
+                    password = user[0].password
                 user = authenticate(username=username, password=password)
                 login_(request, user)
 
