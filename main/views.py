@@ -22,7 +22,7 @@ def home(request):
     timestamp = request.GET.get('timestamp', '')
     nonce     = request.GET.get('nonce', '')
     echostr   = request.GET.get('echostr', '')
-    return echostr
+    return HttpResponse(echostr)
     if signature:
         if validateURL(signature):
             return HttpResponse(echostr)
