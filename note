@@ -1,4 +1,0 @@
-ChangeLog
-=== 08/10/15 ===
-1. Adapted all resource urls to Django (css, js, jpg)
-2. (To do) Fix "post-205 and post-1 have different height"

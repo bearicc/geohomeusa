@@ -12,6 +12,14 @@ from lib import random_string
 
 
 def home(request):
+    // weixin url validate
+    signature = request.GET.get('signature')
+    timestamp = request.GET.get('timestamp')
+    nonce     = request.GET.get('nonce')
+    echostr   = request.GET.get('echostr')
+    if signature and validateURL(signature):
+        return echostr
+
     user = None
     user_info = None
     if request.user.is_authenticated():
@@ -139,3 +147,16 @@ def get_user_info(qq_login_data):
     response = requests.get('https://graph.qq.com/user/get_user_info', headers)
     user_info = response.json()
     return user_info
+
+
+def validateURL(signature):
+    import hashlib
+
+    WXAPPID = 'wxc6f432c17d775275'
+    WXAPPSECRET = '912c6962607e7a409d93a9ee0a5cabae'
+    WXTOKEN = 'y0TiTEvSB9Nkbo0ab-MpByWp_igh-fwhD9MM4LCG82y5H4HplryzA6otPW-37FRYbH_PhWLT2bLC0h4RjLaLtcNwsHrtHQARau4cb2KrSdc'
+    s = ''.join(sorted([WXAPPID, WXAPPSECRET, WXTOKEN]))
+    if hashlib.sha1(s.encode('utf-8')).hexdigest() == signature:
+        return True 
+    else:
+        return False
