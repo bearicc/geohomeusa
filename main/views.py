@@ -38,7 +38,9 @@ def home(request):
                 user = User.objects.filter(username=username)
                 if not user:
                     password = random_string(10)
-                    User.objects.create_user(username, '', password)
+                    user = User.objects.create_user(username, '', password)
+                else:
+                    user = user[0]
                 user.is_authenticated = True
                 login_(request, user)
 
