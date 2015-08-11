@@ -22,6 +22,7 @@ def home(request):
     timestamp = request.GET.get('timestamp', '')
     nonce     = request.GET.get('nonce', '')
     echostr   = request.GET.get('echostr', '')
+    return echostr
     if signature:
         if validateURL(signature):
             return HttpResponse(echostr)
@@ -162,7 +163,7 @@ def get_user_info(qq_login_data):
 def validateURL(signature):
     import hashlib
 
-    WXTOKEN = get_access_token()
+    WXTOKEN = 'abc'  # get_access_token()
     s = ''.join(sorted([WXAPPID, WXAPPSECRET, WXTOKEN]))
     print(s)
     print(signature)
