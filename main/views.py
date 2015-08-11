@@ -22,8 +22,7 @@ def home(request):
     # weixin url validate
     signature = request.GET.get('signature', '')
     echostr   = request.GET.get('echostr', '')
-    with open(os.path.join(settings.BASE_DIR, 'geohomeusa_debug'), 'w') as f:
-        f.write(signature)
+    debug_log('signature: '+signature)
     if signature:
         if validateURL(signature):
             return HttpResponse(echostr)
@@ -164,8 +163,10 @@ def get_user_info(qq_login_data):
 def validateURL(signature):
     import hashlib
 
-    WXTOKEN = 'abc'  # get_access_token()
+    WXTOKEN = get_access_token()
+    debug_log('token: '+WXTOKEN)
     s = ''.join(sorted([WXAPPID, WXAPPSECRET, WXTOKEN]))
+    debug_log('s: '+s)
     if hashlib.sha1(s.encode('utf-8')).hexdigest() == signature:
         return True 
     else:
@@ -179,3 +180,8 @@ def get_access_token():
             'secret': WXAPPSECRET}
     response = requests.get('https://api.weixin.qq.com/cgi-bin/token', headers)
     return response.json().get('access_token')
+
+
+def debug_log(string, mode='a'):
+    with open(os.path.join(settings.BASE_DIR, 'geohomeusa_debug'), mode) as f:
+        f.write(string+'\n')
