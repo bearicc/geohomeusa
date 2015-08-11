@@ -121,6 +121,7 @@ nav a.navbar-brand img {
 #login .checkbox .label {
     font-size: 13px;
     font-weight: normal;
+    color: black;
 }
 #btn-login {
     width: 115px;

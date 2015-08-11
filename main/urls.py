@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^aboutus/', 'main.views.aboutus', name='aboutus'),
     url(r'^signup/', 'main.views.signup', name='signup'),
     url(r'^login/', 'main.views.login', name='login'),
+    url(r'^qq_login/', 'main.views.qq_login', name='qq_login'),
     url(r'^logout/', 'main.views.logout', name='logout'),
 ]
 

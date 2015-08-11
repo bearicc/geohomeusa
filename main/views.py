@@ -2,13 +2,29 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as login_, logout as logout_
 from django.contrib.auth.decorators import login_required
+from uuid import uuid4
+from urllib import parse
+import requests
+import requests.auth
 
 
 def home(request):
     user = None
     if request.user.is_authenticated():
         user = request.user
-        print(user.username)
+
+    error = request.GET.get('error', '')
+    if error:
+        return "Error: " + error
+    state = request.GET.get('state', '')
+    if not is_valid_state(state):
+        print(state)
+    code = request.GET.get('code', '')
+    if code:
+        token = get_token(code)
+        openid = get_openid(token)
+        print("openid: "+openid)
+
     return render(request, 'index.html', {'user': user})
 
 
@@ -34,6 +50,27 @@ def login(request):
     return render(request, 'login.html')
 
 
+def save_created_state(state):
+    pass
+
+
+def is_valid_state(state):
+    return True
+
+
+def qq_login(request):
+    state = str(uuid4())
+    save_created_state(state)
+    params = {'response_type': 'code',
+              'client_id': '101242194',
+              'redirect_uri': 'http://www.bearicc.com',
+              'state': state,
+              'scope': 'do_like'}
+    qq_url = "https://graph.qq.com/oauth2.0/authorize?" + parse.urlencode(params)
+
+    return redirect(qq_url)
+
+
 @login_required
 def logout(request):
     logout_(request)
@@ -49,3 +86,32 @@ def signup(request):
         login_(request, user)
         return redirect('/')
     return render(request, 'signup.html')
+
+
+def get_token(code):
+    CLIENT_ID = '101242194'
+    CLIENT_SECRET = '009b1a427fcec815ad746d189cf67159'
+    REDIRECT_URI = 'http://www.bearicc.com'
+    client_auth = requests.auth.HTTPBasicAuth(CLIENT_ID, CLIENT_SECRET)
+    post_data = {"grant_type": "authorization_code",
+                 "code": code,
+                 "redirect_uri": REDIRECT_URI}
+    response = requests.post('https://graph.qq.com/oauth2.0/token',
+                             auth=client_auth,
+                             data=post_data)
+    token_json = response.json()
+    return token_json["access_token"]
+
+
+def get_openid(access_token):
+    headers = {"access_token": access_token}
+    response = requests.get('https://graph.qq.com/oauth2.0/me', headers=headers)
+    me_json = response.json()
+    return me_json['openid']
+
+
+def get_user_info(access_token, openid):
+    headers = {"Authorization": "bearer " + access_token}
+    response = requests.get('https://graph.qq.com/oauth2.0/me', headers=headers)
+    me_json = response.json()
+    return me_json['openid']
