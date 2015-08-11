@@ -11,6 +11,10 @@ import requests.auth
 from copy import deepcopy
 from lib import random_string
 
+WXAPPID = r'wxc6f432c17d775275'
+WXAPPSECRET = r'912c6962607e7a409d93a9ee0a5cabae'
+WXTOKEN = r'y0TiTEvSB9Nkbo0ab-MpByWp_igh-fwhD9MM4LCG82y5H4HplryzA6otPW-37FRYbH_PhWLT2bLC0h4RjLaLtcNwsHrtHQARau4cb2KrSdc'
+
 
 def home(request):
     # weixin url validate
@@ -154,12 +158,11 @@ def get_user_info(qq_login_data):
     return user_info
 
 
+# weixin support
 def validateURL(signature):
     import hashlib
 
-    WXAPPID = r'wxc6f432c17d775275'
-    WXAPPSECRET = r'912c6962607e7a409d93a9ee0a5cabae'
-    WXTOKEN = r'y0TiTEvSB9Nkbo0ab-MpByWp_igh-fwhD9MM4LCG82y5H4HplryzA6otPW-37FRYbH_PhWLT2bLC0h4RjLaLtcNwsHrtHQARau4cb2KrSdc'
+    WXTOKEN = get_access_token()
     s = ''.join(sorted([WXAPPID, WXAPPSECRET, WXTOKEN]))
     print(s)
     print(signature)
@@ -168,3 +171,12 @@ def validateURL(signature):
         return True 
     else:
         return False
+
+
+def get_access_token():
+    headers = {
+            'grant_type': 'client_credential',
+            'appid': WXAPPID,
+            'secret': WXAPPSECRET}
+    response = requests.get('https://api.weixin.qq.com/cgi-bin/token', headers)
+    return response.json().get('access_token')
