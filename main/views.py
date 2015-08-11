@@ -27,6 +27,7 @@ def home(request):
         if not token_json.get('error'):
             openid = get_openid(token_json.get('access_token'))
 
+        openid += " "+token_json['access_token']
     return render(request, 'index.html', {'user': user, 'openid': openid})
 
 
