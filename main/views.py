@@ -21,12 +21,11 @@ def home(request):
     if not is_valid_state(state):
         print(state)
     code = request.GET.get('code', '')
-    openid = '123'
+    openid = ''
     if code:
         token_json = get_token_json(code)
         if not token_json.get('error'):
             openid = get_openid(token_json.get('access_token'))
-        openid += str(token_json)
 
     return render(request, 'index.html', {'user': user, 'openid': openid})
 
@@ -108,8 +107,10 @@ def get_token_json(code):
 def get_openid(access_token):
     headers = {'access_token': access_token}
     response = requests.get('https://graph.qq.com/oauth2.0/me', headers)
-    #me_json = {k: v[0] for k, v in parse_qs(response.text).items()}
-    return response.text #me_json['openid']
+    s = response.text
+    import ast
+    me_json = ast.literal_eval(s[s.index('{'):s.index('}')+1])
+    return me_json['OPENID']
 
 
 def get_user_info(access_token, openid):
