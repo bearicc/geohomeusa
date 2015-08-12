@@ -17,6 +17,7 @@ import requests.auth
 from django.conf import settings
 import os
 from wechat_sdk import WechatBasic
+import hashlib
 
 TOKEN = 'ZRRPPNMTI2MX3JITEQ9H2N4U6APSWZO5'
 DEBUG = True
@@ -27,19 +28,28 @@ def home(request):
     signature = request.GET.get('signature', '')
     timestamp = request.GET.get('timestamp', '')
     nonce = request.GET.get('nonce')
-    if DEBUG:
-        debug_log('signature: '+signature)
-        debug_log('body: '+request.body)
-    if signature:
-        """
-        token = request.session.get('WXTOKEN')
-        if not token:
-            token = get_access_token()
-            request.session['WXTOKEN'] = token
-        else:
-            token = WXTOKEN
-        """
 
+    echostr = request.GET.get('echostr', '')
+    if DEBUG:
+        debug_log('==========')
+        debug_log('token: '+str(token))
+        debug_log('signature: '+str(signature))
+        debug_log('timestamp: '+str(timestamp))
+        debug_log('nonce: '+str(nonce))
+        if token and timestamp and nonce:
+            s = ''.join(sorted([token,timestamp,nonce]))
+            debug_log('calculate sign: '+hashlib.sha1(s.encode('utf-8')).hexdigest())
+        debug_log('echostr: '+str(echostr))
+    """
+    wechat = WechatBasic(token=token)
+    # 对签名进行校验
+    if wechat.check_signature(signature, timestamp, nonce):
+         return HttpResponse(echostr)
+    else:
+         return HttpResponse('')
+    """
+
+    if signature:
         return weixin_response(token, signature, timestamp, nonce, request.body)
     return HttpResponse('<h1>微信开发中 ...</h1>')
     """
@@ -220,7 +230,8 @@ def weixin_response(token, signature, timestamp, nonce, body_text=''):
     # 实例化 wechat
     wechat = WechatBasic(token=token)
     # 对签名进行校验
-    if wechat.check_signature(signature=signature, timestamp=timestamp, nonce=nonce):
+    if wechat.check_signature(signature, timestamp, nonce):
+	debug_log('check sign success!\n')
         # 对 XML 数据进行解析 (必要, 否则不可执行 response_text, response_image 等操作)
         wechat.parse_data(body_text)
         # 获得解析结果, message 为 WechatMessage 对象 (wechat_sdk.messages中定义)
