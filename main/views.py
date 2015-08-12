@@ -24,7 +24,6 @@ DEBUG = True
 
 
 def home(request):
-    debug_log('This is home!\n')
     token = TOKEN
     if request.method == 'POST':
         signature = request.POST.get('signature', '')
@@ -42,29 +41,21 @@ def home(request):
         debug_log('signature: '+str(signature))
         debug_log('timestamp: '+str(timestamp))
         debug_log('nonce: '+str(nonce))
-        if token and timestamp and nonce:
-            s = ''.join(sorted([token,timestamp,nonce]))
-            debug_log('calculate sign: '+hashlib.sha1(s.encode('utf-8')).hexdigest())
+
+    if token and timestamp and nonce and echostr:
+        s = ''.join(sorted([token,timestamp,nonce]))
+        debug_log('calculated sign: '+hashlib.sha1(s.encode('utf-8')).hexdigest())
         debug_log('echostr: '+str(echostr))
-    """
-    wechat = WechatBasic(token=token)
-    # 对签名进行校验
-    if wechat.check_signature(signature, timestamp, nonce):
-         return HttpResponse(echostr)
-    else:
-         return HttpResponse('')
-    """
+        wechat = WechatBasic(token=token)
+        # 对签名进行校验
+        if wechat.check_signature(signature, timestamp, nonce):
+             return HttpResponse(echostr)
+        else:
+             return HttpResponse('')
 
     if signature:
         return weixin_response(token, signature, timestamp, nonce, request.body)
     return HttpResponse('<h1>微信开发中 ...</h1>')
-    """
-        if validateURL(signature):
-            return HttpResponse(echostr)
-        else:
-            print('Signature validation failed!')
-            return HttpResponse('')
-    """
 
     """
     user = None
@@ -99,9 +90,9 @@ def home(request):
                 user.is_authenticated = True
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login_(request, user)
-    """
 
-    # return render(request, 'index.html', {'user': user, 'user_info': user_info})
+    return render(request, 'index.html', {'user': user, 'user_info': user_info})
+    """
 
 
 def aboutus(request):
