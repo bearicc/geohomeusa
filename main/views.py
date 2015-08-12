@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+For python2.
+"""
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
@@ -15,19 +18,18 @@ from django.conf import settings
 import os
 from wechat_sdk import WechatBasic
 
-WXAPPID = 'wxc6f432c17d775275'
-WXAPPSECRET = '912c6962607e7a409d93a9ee0a5cabae'
-WXTOKEN = 'DxX1Tc4oO0VaNzMAC_-js-P4CVeHKoBCm0zXbme1FKHqtJ0UIaPfvLhOEOSKTf4Z_s-FJh490TY62Yzdj3eWJRyALdw0G9e0KVlOskac2Yg'
+TOKEN = 'ZRRPPNMTI2MX3JITEQ9H2N4U6APSWZO5'
+DEBUG = True
 
 
 def home(request):
+    token = TOKEN
     signature = request.GET.get('signature', '')
-    echostr = request.GET.get('echostr', '')
     timestamp = request.GET.get('timestamp', '')
     nonce = request.GET.get('nonce')
-    debug_log('signature: '+signature)
-    debug_log('body: '+request.body)
-    return HttpResponse(echostr)
+    if DEBUG:
+        debug_log('signature: '+signature)
+        debug_log('body: '+request.body)
     if signature:
         """
         token = request.session.get('WXTOKEN')
@@ -37,10 +39,9 @@ def home(request):
         else:
             token = WXTOKEN
         """
-        token = WXTOKEN
-        debug_log('token: '+token)
 
         return weixin_response(token, signature, timestamp, nonce, request.body)
+    return HttpResponse('<h1>微信开发中 ...</h1>')
     """
         if validateURL(signature):
             return HttpResponse(echostr)
@@ -84,7 +85,6 @@ def home(request):
                 login_(request, user)
     """
 
-    return HttpResponse('Interacting with weixin ...')
     # return render(request, 'index.html', {'user': user, 'user_info': user_info})
 
 
@@ -216,17 +216,6 @@ def debug_log(string, mode='a'):
 def weixin_response(token, signature, timestamp, nonce, body_text=''):
     # 用户的请求内容 (Request 中的 Body)
     # 请更改 body_text 的内容来测试下面代码的执行情况
-    if not body_text:
-        body_text = """
-        <xml>
-        <ToUserName><![CDATA[touser]]></ToUserName>
-        <FromUserName><![CDATA[fromuser]]></FromUserName>
-        <CreateTime>1405994593</CreateTime>
-        <MsgType><![CDATA[text]]></MsgType>
-        <Content><![CDATA[wechat]]></Content>
-        <MsgId>6038700799783131222</MsgId>
-        </xml>
-        """
 
     # 实例化 wechat
     wechat = WechatBasic(token=token)
