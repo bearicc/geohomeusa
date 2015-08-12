@@ -25,11 +25,16 @@ DEBUG = True
 
 def home(request):
     token = TOKEN
-    signature = request.GET.get('signature', '')
-    timestamp = request.GET.get('timestamp', '')
-    nonce = request.GET.get('nonce')
+    if request.method == 'POST'
+        signature = request.POST.get('signature', '')
+        timestamp = request.POST.get('timestamp', '')
+        nonce = request.POST.get('nonce')
+    else if request.method == 'GET':
+        signature = request.GET.get('signature', '')
+        timestamp = request.GET.get('timestamp', '')
+        nonce = request.GET.get('nonce')
+        echostr = request.GET.get('echostr', '')
 
-    echostr = request.GET.get('echostr', '')
     if DEBUG:
         debug_log('==========')
         debug_log('token: '+str(token))
