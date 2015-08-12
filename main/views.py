@@ -19,7 +19,7 @@ import os
 from wechat_sdk import WechatBasic
 import hashlib
 
-TOKEN = 'ZRRPPNMTI2MX3JITEQ9H2N4U6APSWZO5'
+TOKEN = 'jrmevp1396842867'
 DEBUG = True
 
 
