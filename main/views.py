@@ -24,12 +24,13 @@ DEBUG = True
 
 
 def home(request):
+    debug_log('This is home!\n')
     token = TOKEN
-    if request.method == 'POST'
+    if request.method == 'POST':
         signature = request.POST.get('signature', '')
         timestamp = request.POST.get('timestamp', '')
         nonce = request.POST.get('nonce')
-    else if request.method == 'GET':
+    elif request.method == 'GET':
         signature = request.GET.get('signature', '')
         timestamp = request.GET.get('timestamp', '')
         nonce = request.GET.get('nonce')
@@ -229,6 +230,7 @@ def debug_log(string, mode='a'):
 
 
 def weixin_response(token, signature, timestamp, nonce, body_text=''):
+    debug_log('check sign ...\n')
     # 用户的请求内容 (Request 中的 Body)
     # 请更改 body_text 的内容来测试下面代码的执行情况
 
@@ -236,7 +238,6 @@ def weixin_response(token, signature, timestamp, nonce, body_text=''):
     wechat = WechatBasic(token=token)
     # 对签名进行校验
     if wechat.check_signature(signature, timestamp, nonce):
-	debug_log('check sign success!\n')
         # 对 XML 数据进行解析 (必要, 否则不可执行 response_text, response_image 等操作)
         wechat.parse_data(body_text)
         # 获得解析结果, message 为 WechatMessage 对象 (wechat_sdk.messages中定义)
